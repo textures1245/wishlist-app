@@ -1,0 +1,26 @@
+<div class=" text-slate-600 dark:text-slate-400">
+  <div
+    class="topic dark:text-slate-200 font-sans antialiased text-lg capitalize font-medium"
+  >
+    <h3 class="">Welcome to Wishlist Application {{ version }}</h3>
+    <hr class="my-4" />
+  </div>
+  <div class="section">
+    <ul class="list-square list-inside">
+      <li class="font-light leading-loose text-sm md:text-base mb-1 " *ngFor="let p of aboutSection">
+        {{ p }}
+      </li>
+    </ul>
+  </div>
+  <div class="detail mt-3">
+      <h3
+      class="dark:text-slate-200 font-sans antialiased text-lg capitalize font-medium"
+      >
+      Wishlist Application Detail
+    </h3>
+    <hr class="my-4" />
+    <ul class="list-[decimal] list-inside">
+      <li class="font-light leading-loose text-sm md:text-base mb-1" *ngFor="let d of detail">{{ d }}</li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,284 @@
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div
+  *ngIf="triggerDialog"
+  class="relative z-10"
+  aria-labelledby="slide-over-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <!--
+      Background backdrop, show/hide based on slide-over state.
+  
+      Entering: "ease-in-out duration-500"
+        From: "opacity-0"
+        To: "opacity-100"
+      Leaving: "ease-in-out duration-500"
+        From: "opacity-100"
+        To: "opacity-0"
+    -->
+  <div
+    [ngClass]="
+      triggerDialog
+        ? 'ease-in-out duration-500 opacity-100'
+        : 'ease-in-out duration-500 opacity-0'
+    "
+    class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+  ></div>
+
+  <div class="fixed inset-0 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div
+        class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
+      >
+        <!--
+            Slide-over panel, show/hide based on slide-over state.
+  
+            Entering: "transform transition ease-in-out duration-500 sm:duration-700"
+              From: "translate-x-full"
+              To: "translate-x-0"
+            Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
+              From: "translate-x-0"
+              To: "translate-x-full"
+          -->
+        <div
+          [ngClass]="
+            triggerDialog
+              ? 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-0'
+              : 'transform transition ease-in-out duration-500 sm:duration-700 translate-x-full'
+          "
+          class="pointer-events-auto relative w-screen max-w-md"
+        >
+          <!--
+              Close button, show/hide based on slide-over state.
+  
+              Entering: "ease-in-out duration-500"
+                From: "opacity-0"
+                To: "opacity-100"
+              Leaving: "ease-in-out duration-500"
+                From: "opacity-100"
+                To: "opacity-0"
+            -->
+          <div
+            [ngClass]="
+              triggerDialog
+                ? 'ease-in-out duration-500 opacity-100'
+                : 'ease-in-out duration-500 opacity-0'
+            "
+            class="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4"
+          >
+            <button
+              (click)="onCloseDialog()"
+              type="button"
+              class="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+            >
+              <span class="sr-only">Close panel</span>
+              <!-- Heroicon name: outline/x -->
+              <svg
+                class="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div
+            class="flex h-full flex-col overflow-y-scroll bg-white  py-6 shadow-xl"
+          >
+            <div class="flex justify-center">
+              <img
+                [src]="imagePlaceHolder"
+                alt=""
+                class="box-border h-5/12 w-5/12 p-4 rounded-md"
+              />
+            </div>
+            <div class="relative flex py-3 px-5 items-center">
+              <div class="flex-grow border-t border-gray-400"></div>
+              <span class="flex-shrink mx-4 text-gray-400 text-xs"
+                >Previews</span
+              >
+              <div class="flex-grow border-t border-gray-400"></div>
+            </div>
+            <div class="relative mt-3 flex-1 px-4 sm:px-6">
+              <form [formGroup]="wishlistForm" (ngSubmit)="onSubmit()">
+                <div class="mb-6">
+                  <div class="flex justify-between">
+                    <label
+                      for="name"
+                      class="block text-sm font-medium text-gray-700"
+                      >Product Name
+                    </label>
+                    <span
+                      *ngIf="
+                        this.wishlistForm.get('name')?.invalid &&
+                        this.wishlistForm.get('name')?.touched
+                      "
+                      class="text-xs text-rose-500 font-light"
+                      >This field can't be blank.</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    name="name"
+                    formControlName="name"
+                    id="name"
+                    autocomplete="given-name"
+                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full p-1 shadow-md text-sm border-gray-200 border-x-2 rounded-md"
+                  />
+                </div>
+                <div class="mb-6">
+                  <div class="flex justify-between">
+                    <label
+                      for="price"
+                      class="block text-sm font-medium text-gray-700"
+                      >Price</label
+                    >
+                    <span
+                      *ngIf="
+                        this.wishlistForm.get('price')?.invalid &&
+                        this.wishlistForm.get('price')?.touched
+                      "
+                      class="text-xs text-rose-500 font-light"
+                      >This field can't be blank.</span
+                    >
+                  </div>
+                  <div class="flex rounded-md shadow-sm mt-1">
+                    <span
+                      class="inline-flex items-center px-3 rounded-l-md border-x-2 border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm shadow-md"
+                      >฿</span
+                    >
+                    <input
+                      type="number"
+                      name="price"
+                      formControlName="price"
+                      id="price"
+                      autocomplete="given-name"
+                      class="focus:ring-indigo-500 focus:border-indigo-500 block w-full p-1 text-sm border-gray-200 shadow-md border-x-2 rounded-l-none rounded-md"
+                    />
+                  </div>
+                </div>
+                <div class="mb-6">
+                  <div class="flex justify-between">
+                    <label
+                      for="description"
+                      class="block text-sm font-medium text-gray-700"
+                      >Description</label
+                    >
+                    <span
+                      *ngIf="
+                        this.wishlistForm.get('description')?.invalid &&
+                        this.wishlistForm.get('description')?.touched
+                      "
+                      class="text-xs text-rose-500 font-light"
+                      >This field can't be blank.</span
+                    >
+                  </div>
+                  <textarea
+                    type="text"
+                    rows="2"
+                    name="description"
+                    formControlName="description"
+                    id="description"
+                    autocomplete="given-name"
+                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full p-1 shadow-md text-sm border-gray-200 border-x-2 rounded-md"
+                  ></textarea>
+                </div>
+                <div class="mb-6">
+                  <div class="flex justify-between">
+                    <label
+                      for="source"
+                      class="block text-sm font-medium text-gray-700"
+                      >Image Url</label
+                    >
+                    <span
+                      *ngIf="
+                        this.wishlistForm.get('imageUrl').errors?.required &&
+                        this.wishlistForm.get('imageUrl')?.touched
+                      "
+                      class="text-xs text-rose-500 font-light"
+                      >This field can't be blank.</span
+                    >
+                    <span
+                      *ngIf="
+                        this.wishlistForm.get('imageUrl').errors?.pattern &&
+                        this.wishlistForm.get('imageUrl')?.touched
+                      "
+                      class="text-xs text-rose-500 font-light"
+                      >URL pattern is invalid!</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    name="imageUrl"
+                    formControlName="imageUrl"
+                    id="source"
+                    autocomplete="given-name"
+                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full p-1 shadow-md text-sm border-gray-200 border-x-2 rounded-md"
+                  />
+                </div>
+                <div class="mb-3">
+                  <div class="flex justify-between">
+                    <label
+                      for="first-name"
+                      class="block text-sm font-medium text-gray-700"
+                      >Source</label
+                    >
+                    <span
+                      *ngIf="
+                      this.wishlistForm.get('source').errors?.required &&
+                      this.wishlistForm.get('source')?.touched
+                      "
+                      class="text-xs text-rose-500 font-light"
+                      >This field can't be blank.</span
+                    >
+                    <span
+                    *ngIf="
+                      this.wishlistForm.get('source').errors?.pattern &&
+                      this.wishlistForm.get('source')?.touched
+                    "
+                    class="text-xs text-rose-500 font-light"
+                    >URL pattern is invalid!</span
+                  >
+                  </div>
+                  <input
+                    type="text"
+                    name="source"
+                    formControlName="source"
+                    id="first-name"
+                    autocomplete="given-name"
+                    class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full p-1 shadow-md text-sm border-gray-200 border-x-2 rounded-md"
+                  />
+                </div>
+                <div class="relative flex pt-3 px-5 items-center">
+                  <div class="flex-grow border-t border-gray-400"></div>
+                  <button
+                    [ngClass]="
+                      this.wishlistForm.invalid
+                        ? 'cursor-not-allowed	bg-opacity-50'
+                        : 'cursor-pointer hover:bg-emerald-800'
+                    "
+                    [disabled]="this.wishlistForm.invalid"
+                    class="flex-shrink mx-4 text-teal-100 bg-emerald-600 focus:bg-emerald-800 rounded-md p-2 text-xs"
+                    type="submit"
+                    >
+                    {{ editMode ? 'Update' : 'Submit' }}
+                  </button>
+                  <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
