@@ -7,7 +7,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Wishlist } from './wishlist.model';
 import * as fromGlobal from './store/global.reducer';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { WishlistStorageService } from './wishlist-storage.service';
 
 @Injectable({
@@ -15,6 +15,9 @@ import { WishlistStorageService } from './wishlist-storage.service';
 })
 export class WishlistResolverService implements Resolve<Wishlist[]> {
   wishlists: Wishlist[] = [];
+  currentUsername = null;
+  lastUsername = null;
+  firstLoad = false;
 
   constructor(
     private store: Store<fromGlobal.AppState>,
@@ -25,12 +28,24 @@ export class WishlistResolverService implements Resolve<Wishlist[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Wishlist[] | Observable<Wishlist[]> | Promise<Wishlist[]> | any {
-    this.store.select('wishlistState').subscribe((state) => {
-      this.wishlists = state.wishlists;
+    this.store.select('authState').subscribe((state) => {
+      this.currentUsername = state.username;
     });
-    if (this.wishlists.length === 0) {
-      return this.wishlistStorage.fetchWishlist();
-    }
+    this.store
+      .select('wishlistState')
+      .pipe(take(1))
+      .subscribe((state) => {
+        this.wishlists = state.wishlists;
+        if (this.wishlists.length === 0 && !this.firstLoad) {
+          this.firstLoad = true;
+          return this.wishlistStorage.fetchWishlist();
+        }
+        if (this.lastUsername !== this.currentUsername) {
+          this.lastUsername = this.currentUsername;
+          return this.wishlistStorage.fetchWishlist();
+        }
+      });
     return this.wishlists;
   }
+
 }

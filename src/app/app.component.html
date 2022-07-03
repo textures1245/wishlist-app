@@ -4,7 +4,7 @@
       <br class="sm:block hidden" />
       <br class="sm:block hidden" />
       <app-header (toggleDarkMode)="switchToDarkMode($event)"></app-header>
-      <div class="mt-10 px-7 text-slate-600 dark:text-slate-400">
+      <div class=" mt-10 px-7 text-slate-600 dark:text-slate-400">
         <router-outlet></router-outlet>
       </div>
       <!--* Dialog edit/new wishlist -->
@@ -25,6 +25,7 @@
         "
         [(takeAction)]="getAction"
       ></app-confirm-window>
+      <app-notification-alert></app-notification-alert>
       <app-footer></app-footer>
     </div>
   </body>

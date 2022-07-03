@@ -11,35 +11,51 @@ import * as WishlistAction from './store/wishlist.action';
   providedIn: 'root',
 })
 export class WishlistStorageService {
+  username: string|null = null;
+  userDatabase: string|null = null;
+  wishlists: Wishlist[] = [];
+
   constructor(
     private http: HttpClient,
     private store: Store<fromGlobal.AppState>
-  ) {}
-  username = 'phakh';
-  userDatabase = environment.DatabaseAPI + this.username + '.json';
-  wishlists: Wishlist[] = [];
-
-  putWishlist() {
-    this.store.select('wishlistState').subscribe((wishlists) => {
-      this.wishlists = wishlists.wishlists;
-    });
-    this.http
-      .put<Wishlist[]>(this.userDatabase, this.wishlists)
-      .subscribe((resData) => {
-        console.log('put success', resData);
+  ) {
+    this.store
+      .select('authState')
+      .subscribe((authState) => {
+        this.username = authState.username;
+        this.userDatabase = environment.DatabaseAPI + this.username + '.json';
       });
   }
 
-  fetchWishlist() {
-    this.http
-      .get<Wishlist[]>(this.userDatabase)
-      .pipe(
-        tap((wishlists) => {
-          this.store.dispatch(new WishlistAction.SetWishlist(wishlists));
-        })
-      )
-      .subscribe((resData) => {
-        console.log('fetch success', resData);
+  putWishlist() {
+    if (this.username !== null) {
+      this.store.select('wishlistState').subscribe((wishlists) => {
+        this.wishlists = wishlists.wishlists;
       });
+      this.http
+        .put<Wishlist[]>(this.userDatabase, this.wishlists)
+        .subscribe((resData) => {
+          console.log('put success', resData);
+        });
+    } else {
+      alert('username is null');
+    }
+  }
+
+  fetchWishlist() {
+    if (this.username !== null) {
+      this.http
+        .get<Wishlist[]>(this.userDatabase)
+        .pipe(
+          tap((wishlists) => {
+            this.store.dispatch(new WishlistAction.SetWishlist(wishlists));
+          })
+        )
+        .subscribe((resData) => {
+          console.log('fetch success', resData);
+        });
+    } else {
+      alert('username is null');
+    }
   }
 }

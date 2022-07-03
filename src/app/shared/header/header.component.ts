@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Inject,
+  Injectable,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { EventEmitter, Output } from '@angular/core';
 import { SharedService } from '../shared.service';
 import * as fromGlobal from '../../wishlists/store/global.reducer';
@@ -6,18 +12,23 @@ import { Store } from '@ngrx/store';
 import * as WishlistAction from '../../wishlists/store/wishlist.action';
 import { WishlistStorageService } from 'src/app/wishlists/wishlist-storage.service';
 import { Subscription } from 'rxjs';
+import * as AuthAction from '../../auth/store/auth.actions';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit, OnDestroy{
+export class HeaderComponent implements OnInit, OnDestroy {
   @Output() toggleDarkMode = new EventEmitter<boolean>();
   darkModeState = false;
   openMenu = false;
+  openAuthMenu = false;
   stateHasChanged = false;
   _clearChangedState$ = Subscription.EMPTY;
+  hadAuthenticate = false;
+
   constructor(
     private sharedService: SharedService,
     private store: Store<fromGlobal.AppState>,
@@ -25,9 +36,16 @@ export class HeaderComponent implements OnInit, OnDestroy{
   ) {}
 
   ngOnInit(): void {
-    this._clearChangedState$ = this.store.select('wishlistState').subscribe((state) => {
-      this.stateHasChanged = state.changeState;
-    })
+    this._clearChangedState$ = this.store
+      .select('wishlistState')
+      .subscribe((state) => {
+        this.stateHasChanged = state.changeState;
+      });
+    this.store.select('authState').subscribe((authState) => {
+      this.hadAuthenticate = authState.user !== null;
+    });
+
+    this.dynamicCloseMenu();
   }
 
   onToggleDarkMode() {
@@ -56,6 +74,18 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   onFetchState() {
     this.wishlistStorage.fetchWishlist();
+  }
+
+  onLogout() {
+    this.store.dispatch(new AuthAction.Logout());
+  }
+
+  private dynamicCloseMenu() {
+    window.onclick = (event) => {
+      if (!event.target.matches('.auth-menu')) {
+        this.openAuthMenu = false;
+      }
+    };
   }
 
   ngOnDestroy(): void {

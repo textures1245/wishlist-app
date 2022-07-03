@@ -7,5 +7,6 @@ import { Subject } from "rxjs";
 
 export class ConfirmService {
     confirmAction$ = new Subject<boolean>();
+    objectAction$ = new Subject<object>();
     constructor() { }
 }

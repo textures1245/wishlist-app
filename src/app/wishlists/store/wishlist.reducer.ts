@@ -10,24 +10,7 @@ export interface State {
 }
 
 const initialState: State = {
-  wishlists: [
-    // new Wishlist(
-    //   0,
-    //   'iPad Pro 12',
-    //   'iPad Pro 12 with screen 12.9 inch',
-    //   899,
-    //   'https://images.unsplash.com/photo-1589739900243-4b52cd9b104e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=704&q=80',
-    //   'soucre'
-    // ),
-    // new Wishlist(
-    //   1,
-    //   'JÄRVFJÄLLET',
-    //   '10 year guarantee. Read about the terms in the guarantee brochure',
-    //   499,
-    //   'https://www.ikea.com/th/th/images/products/jaervfjaellet-office-chair-with-armrests__1009906_pe827773_s5.jpg?f=xl',
-    //   'https://www.ikea.com/th/en/p/jaervfjaellet-office-chair-with-armrests-80494540/'
-    // ),
-  ],
+  wishlists: [],
   wishlistDetail: null,
   itemId: -1,
   editMode: false,

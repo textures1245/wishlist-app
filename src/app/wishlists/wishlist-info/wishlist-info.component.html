@@ -1,44 +1,8 @@
-<!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
--->
-<!--
-      Background backdrop, show/hide based on modal state.
-  
-      Entering: "ease-out duration-300"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in duration-200"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
+
 <!--* burr background -->
-<!-- <div class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity md:block"></div> -->
 
 <div class="z-10 inset-0 overflow-y-auto">
-  <!-- <div class="flex items-stretch md:items-center justify-center min-h-full text-center md:px-2 lg:px-4"> -->
-  <!--
-          Modal panel, show/hide based on modal state.
-  
-          Entering: "ease-out duration-300"
-            From: "opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
-            To: "opacity-100 translate-y-0 md:scale-100"
-          Leaving: "ease-in duration-200"
-            From: "opacity-100 translate-y-0 md:scale-100"
-            To: "opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
-        -->
+
   <div
     class="relative flex items-center bg-gray-50 dark:bg-gray-800 rounded-md px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8"
   >
@@ -47,7 +11,6 @@
       class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
     >
       <span class="sr-only">Go back</span>
-      <!-- Heroicon name: outline/x -->
       <svg
         (click)="onHistoryBack()"
         xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import * as fromGlobal from '../wishlists/store/global.reducer';
 import * as WishlistAction from '../wishlists/store/wishlist.action';
@@ -9,7 +10,9 @@ import * as WishlistAction from '../wishlists/store/wishlist.action';
   styleUrls: ['./overview.component.css'],
 })
 export class OverviewComponent implements OnInit {
-  version = '1.0.0';
+  versions = ['1.0.0', '1.1.0'];
+  versionSelected = this.versions.slice(-1)[0];
+
   aboutSection = [
     'A simple app to manage your wishlist items.',
     'You can add, edit, delete and share your wishlist items.',
@@ -18,24 +21,41 @@ export class OverviewComponent implements OnInit {
     'Used Tailwind CSS framework for styling.',
     'Firebase backend for storing data as JSON.',
     'This application is open source and you can contribute to it. You can view the source code on my GitHub.',
-    '📌 For some reasons this web application are not fully supported on safari browser right now.', 
-    "📌 For a best experience please used other browser",
-    '📌 authentication feature is still on under development.',
+    'Authentication feature is available. Sign in with email and password.',
+    'Dynamic alert message service',
+    '📌 For some reasons this web application are not fully supported on safari browser right now.',
+    '📌 For a best experience please used other browser',
   ];
 
-  detail = [
-    'Add wishlist, edit wishlist, delete wishlist',
-    'Display wishlists',
-    'Toggle dark mode',
-    'Save and fetch wishlists',
-    'Dynamic components, easier for managing item (add, edit view and delete item)',
-    'Responsive design for mobile and desktop',
-    'UI designing for better user experience',
-  ];
+  details = {
+    '1.0.0': [
+      'Add wishlist, edit wishlist, delete wishlist',
+      'Display wishlists',
+      'Toggle dark mode',
+      'Save and fetch wishlists',
+      'Authenticated user and routes',
+      'Shows dynamic error messages with Dynamic alert message service',
+      'Auto Login/Logout and expired account feature.',
+      'Dynamic components, easier for managing item (add, edit view and delete item)',
+      'Responsive design for mobile and desktop',
+      'UI designing for better user experience',
+    ],
+    '1.1.0': [
+      'Authenticated user and routes',
+      'Shows dynamic error messages with Dynamic alert message service',
+      'Auto Login/Logout and expired account feature.',
+    ],
+  };
 
-  constructor(private store: Store<fromGlobal.AppState>) {}
+  constructor(private store: Store<fromGlobal.AppState>) {
+
+  }
 
   ngOnInit(): void {
     this.store.dispatch(new WishlistAction.ClearWishlist());
+  }
+
+  changedVersion(version: string) {
+    this.versionSelected = version;
   }
 }

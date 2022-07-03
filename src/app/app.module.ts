@@ -11,10 +11,19 @@ import { AppRoutingModule } from './route/app-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './wishlists/store/global.reducer';
 import { FooterComponent } from './shared/footer/footer.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmWindowComponent } from './shared/confirm-window/confirm-window.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SubStringPipe } from './sub-string-pipe/sub-string.pipe';
+import { AuthComponent } from './auth/auth.component';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './auth/store/auth.effects';
+import { AuthInterceptor } from './auth/auth-interceptor.service';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { NotificationAlertComponent } from './shared/notification-alert/notification-alert.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -26,16 +35,24 @@ import { SubStringPipe } from './sub-string-pipe/sub-string.pipe';
     WishlistEditComponent,
     FooterComponent,
     ConfirmWindowComponent,
-    SubStringPipe
+    SubStringPipe,
+    AuthComponent,
+    NotificationAlertComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     StoreModule.forRoot(reducers),
-    HttpClientModule
+    EffectsModule.forRoot([AuthEffects]),
+    StoreDevtoolsModule.instrument({logOnly: environment.production}),
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

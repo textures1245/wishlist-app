@@ -18,7 +18,7 @@ export class WishlistInfoComponent implements OnInit, OnDestroy {
   wishlist: Wishlist | any;
   id: number = 0;
   _clearWishlistState$ = Subscription.EMPTY;
-  _clearConfirmState$
+  _clearConfirmState$ = Subscription.EMPTY;
 
   constructor(
     private store: Store<fromGlobal.AppState>,
